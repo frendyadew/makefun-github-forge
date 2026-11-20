@@ -30,6 +30,9 @@ const REQUEST_TIMEOUT_MS = 30_000;
 const RETRY_INITIAL_MS = 250;
 const RETRY_MAX_MS = 2_000;
 
+/** The name of this forge, logged once so the env's log says which entry answered it. */
+const ENTRY_NAME = 'makefun-github-forge';
+
 const sleep = (ms: number): Promise<void> => new Promise((resolve) => setTimeout(resolve, ms));
 
 /** The wait after `attempt` failed requests: exponential from RETRY_INITIAL_MS, capped. */
@@ -86,6 +89,7 @@ async function main(): Promise<void> {
   const address = server.address();
   if (address === null || typeof address === 'string') throw new Error('the server did not bind an ephemeral TCP port');
   process.stdout.write(`[entry] listening on port ${address.port}\n`);
+  process.stdout.write(`[entry] ${ENTRY_NAME} is up\n`);
 
   await register(address.port);
   process.stdout.write('[entry] registered; waiting for the env to say done\n');
